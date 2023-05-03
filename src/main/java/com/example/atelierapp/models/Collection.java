@@ -1,12 +1,20 @@
 package com.example.atelierapp.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "collections")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Collection {
 
     @Id
@@ -23,74 +31,9 @@ public class Collection {
     private Designer designer;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "collection_category",
-            joinColumns = @JoinColumn(name = "collection_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @JoinTable(name = "collection_category", joinColumns = @JoinColumn(name = "collection_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "collection_items",
-            joinColumns = @JoinColumn(name = "collection_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id"))
+    @JoinTable(name = "collection_items", joinColumns = @JoinColumn(name = "collection_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
     private Set<Item> items = new HashSet<>();
-
-    // getters and setters
-
-    public Collection() {
-    }
-
-    public Collection(String name, String description, Designer designer, Set<Item> items, Set<Category> categories) {
-        this.name = name;
-        this.description = description;
-        this.designer = designer;
-        this.items = items;
-        this.categories = categories;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Designer getDesigner() {
-        return designer;
-    }
-
-    public void setDesigner(Designer designer) {
-        this.designer = designer;
-    }
-
-    public Set<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(Set<Item> items) {
-        this.items = items;
-    }
-
-    public Set<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
 }

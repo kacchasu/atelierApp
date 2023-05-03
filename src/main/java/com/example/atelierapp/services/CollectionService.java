@@ -1,21 +1,18 @@
 package com.example.atelierapp.services;
 
 import com.example.atelierapp.exceptions.ResourceNotFoundException;
-import com.example.atelierapp.models.Category;
 import com.example.atelierapp.models.Collection;
 import com.example.atelierapp.repositories.CollectionRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CollectionService {
 
     private final CollectionRepository collectionRepository;
-
-    public CollectionService(CollectionRepository collectionRepository) {
-        this.collectionRepository = collectionRepository;
-    }
 
     public List<Collection> getAllCollections() {
         return collectionRepository.findAll();
@@ -45,6 +42,6 @@ public class CollectionService {
     }
 
     public Collection findCollectionByName(String name) {
-        return collectionRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Collection not found with name: " + name));
+        return collectionRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Collection name: " + name));
     }
 }

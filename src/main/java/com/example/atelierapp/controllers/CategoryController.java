@@ -1,65 +1,41 @@
 package com.example.atelierapp.controllers;
 
 import com.example.atelierapp.dtos.CategoryDTO;
-import com.example.atelierapp.mappers.CategoryMapper;
-import com.example.atelierapp.models.Category;
-import com.example.atelierapp.models.Item;
 import com.example.atelierapp.services.CategoryService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping("/categories")
+@RepositoryRestController
+@RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-    private final CategoryMapper categoryMapper;
 
-    public CategoryController(CategoryService categoryService, CategoryMapper categoryMapper) {
-        this.categoryService = categoryService;
-        this.categoryMapper = categoryMapper;
-    }
-
-    @GetMapping("")
+    @GetMapping("/categories")
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
-        List<Category> categories = categoryService.getAllCategories();
-        List<CategoryDTO> categoryDTOs = new ArrayList<>();
-        for(Category category : categories) {
-            categoryDTOs.add(categoryMapper.toCategoryDTO(category));
-        }
-        return ResponseEntity.ok().body(categoryDTOs);
+        return ResponseEntity.ok().body(categoryService.getAllCategories());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/categories/{id}")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
-        Category category = categoryService.getCategoryById(id);
-        CategoryDTO categoryDTO = categoryMapper.toCategoryDTO(category);
-        return ResponseEntity.ok().body(categoryDTO);
+        return ResponseEntity.ok().body(categoryService.getCategoryById(id));
     }
 
-    @PostMapping("")
+    @PostMapping("/categories")
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
-        Category category = categoryMapper.toCategory(categoryDTO);
-        Category createdCategory = categoryService.createCategory(category);
-        CategoryDTO createdCategoryDTO = categoryMapper.toCategoryDTO(createdCategory);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCategoryDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(categoryDTO));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/categories/{id}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
-        Category category = categoryMapper.toCategory(categoryDTO);
-        category.setCollections(categoryService.getCategoryById(id).getCollections());
-        category.setItems(categoryService.getCategoryById(id).getItems());
-        category.setId(id);
-        Category updatedCategory = categoryService.updateCategory(id, category);
-        CategoryDTO updatedCategoryDTO = categoryMapper.toCategoryDTO(updatedCategory);
-        return ResponseEntity.ok().body(updatedCategoryDTO);
+        return ResponseEntity.ok().body(categoryService.updateCategory(id, categoryDTO));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/categories/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();

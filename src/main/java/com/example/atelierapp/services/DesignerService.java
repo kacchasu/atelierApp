@@ -3,18 +3,16 @@ package com.example.atelierapp.services;
 import com.example.atelierapp.exceptions.ResourceNotFoundException;
 import com.example.atelierapp.models.Designer;
 import com.example.atelierapp.repositories.DesignerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DesignerService {
 
     private final DesignerRepository designerRepository;
-
-    public DesignerService(DesignerRepository designerRepository) {
-        this.designerRepository = designerRepository;
-    }
 
     public List<Designer> getAllDesigners() {
         return designerRepository.findAll();

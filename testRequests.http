@@ -1,0 +1,242 @@
+# category
+GET http://localhost:8080/categories
+
+###
+GET http://localhost:8080/categories/6
+
+###
+POST http://localhost:8080/categories
+Content-Type: application/json
+
+{
+  "name": "category1"
+}
+
+###
+POST http://localhost:8080/categories
+Content-Type: application/json
+
+{
+  "name": "category2"
+}
+
+###
+POST http://localhost:8080/categories
+Content-Type: application/json
+
+{
+  "name": "category3"
+}
+
+###
+POST http://localhost:8080/categories
+Content-Type: application/json
+
+{
+  "name": "category4"
+}
+
+###
+PUT http://localhost:8080/categories/1
+Content-Type: application/json
+
+{
+  "name": "Updated category name1"
+}
+
+###
+DELETE http://localhost:8080/categories/1
+# designer
+###
+GET http://localhost:8080/designers
+
+###
+GET http://localhost:8080/designers/6
+
+###
+POST http://localhost:8080/designers
+Content-Type: application/json
+
+{
+  "name": "Designer name 1",
+  "description": "Designer description",
+  "categoryIds": [
+    1,
+    2
+  ]
+}
+
+###
+POST http://localhost:8080/designers
+Content-Type: application/json
+
+{
+  "name": "Designer name 2",
+  "description": "Designer description",
+  "categoryIds": [
+    3,
+    4
+  ]
+}
+
+###
+PUT http://localhost:8080/designers/1
+Content-Type: application/json
+
+{
+  "name": "Updated designer name1",
+  "description": "Updated designer description",
+  "categoryIds": [
+    1,
+    2
+  ]
+}
+
+###
+DELETE http://localhost:8080/designers/1
+# item
+###
+GET http://localhost:8080/items
+
+###
+GET http://localhost:8080/items/1
+
+###
+POST http://localhost:8080/items
+Content-Type: application/json
+
+{
+  "name": "Item name1",
+  "description": "Item description",
+  "price": 19.99,
+  "designerId": 1,
+  "categoryIds": [
+    1
+  ]
+}
+
+###
+POST http://localhost:8080/items
+Content-Type: application/json
+
+{
+  "name": "Item name2",
+  "description": "Item description",
+  "price": 19.99,
+  "designerId": 1,
+  "categoryIds": [
+    2
+  ]
+}
+
+###
+POST http://localhost:8080/items
+Content-Type: application/json
+
+{
+  "name": "Item name3",
+  "description": "Item description",
+  "price": 19.99,
+  "designerId": 2,
+  "categoryIds": [
+    3
+  ]
+}
+
+###
+POST http://localhost:8080/items
+Content-Type: application/json
+
+{
+  "name": "Item name4",
+  "description": "Item description",
+  "price": 19.99,
+  "designerId": 2,
+  "categoryIds": [
+    3,
+    4
+  ]
+}
+
+###
+PUT http://localhost:8080/items/1
+Content-Type: application/json
+
+{
+  "name": "Updated item name1",
+  "description": "Updated item description",
+  "price": 29.99,
+  "designerId": 1,
+  "categoryIds": [
+    1
+  ]
+}
+
+###
+DELETE http://localhost:8080/items/1
+# collection
+###
+GET http://localhost:8080/collections
+
+###
+GET http://localhost:8080/collections/1
+
+###
+POST http://localhost:8080/collections
+Content-Type: application/json
+
+{
+  "name": "Collection name1",
+  "description": "Collection description",
+  "designerId": 1,
+  "itemIds": [
+    1,
+    2
+  ],
+  "categoryIds": [
+    1,
+    2
+  ]
+}
+
+###
+POST http://localhost:8080/collections
+Content-Type: application/json
+
+{
+  "name": "Collection name2",
+  "description": "Collection description",
+  "designerId": 2,
+  "itemIds": [
+    3,
+    4
+  ],
+  "categoryIds": [
+    3,
+    4
+  ]
+}
+
+###
+PUT http://localhost:8080/collections/1
+Content-Type: application/json
+
+{
+  "name": "Updated collection name2",
+  "description": "Updated collection description",
+  "designerId": 1,
+  "itemIds": [
+    1,
+    2
+  ],
+  "categoryIds": [
+    1,
+    2
+  ]
+}
+
+###
+DELETE http://localhost:8080/collections/1
+# filtration
+###
+GET http://localhost:8080/designers/search/findByCategoriesIdIn?categoryId=1

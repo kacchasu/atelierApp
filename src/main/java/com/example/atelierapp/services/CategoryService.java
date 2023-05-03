@@ -1,43 +1,55 @@
 package com.example.atelierapp.services;
 
+import com.example.atelierapp.dtos.CategoryDTO;
 import com.example.atelierapp.exceptions.ResourceNotFoundException;
+import com.example.atelierapp.mappers.CategoryMapper;
 import com.example.atelierapp.models.Category;
 import com.example.atelierapp.repositories.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public List<CategoryDTO> getAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        List<CategoryDTO> categoryDTOs = new ArrayList<>();
+        for (Category category : categories) {
+            categoryDTOs.add(categoryMapper.toCategoryDTO(category));
+        }
+        return categoryDTOs;
     }
 
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public CategoryDTO getCategoryById(Long id) {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category id: " + id));
+        return categoryMapper.toCategoryDTO(category);
     }
 
-    public Category getCategoryById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category id: " + id));
+    public CategoryDTO createCategory(CategoryDTO categoryDTO) {
+        Category category = categoryMapper.toCategory(categoryDTO);
+        Category createdCategory = categoryRepository.save(category);
+        return categoryMapper.toCategoryDTO(createdCategory);
     }
 
-    public Category createCategory(Category category) {
-        return categoryRepository.save(category);
-    }
-
-    public Category updateCategory(Long id, Category updatedCategory) {
-        Category category = getCategoryById(id);
-        category.setName(updatedCategory.getName());
-        return categoryRepository.save(category);
+    public CategoryDTO updateCategory(Long id, CategoryDTO updatedCategoryDTO) {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category id: " + id));
+        Category updatedCategory = categoryMapper.toCategory(updatedCategoryDTO);
+        updatedCategory.setCollections(category.getCollections());
+        updatedCategory.setItems(category.getItems());
+        updatedCategory.setId(id);
+        categoryRepository.save(updatedCategory);
+        return updatedCategoryDTO;
     }
 
     public void deleteCategory(Long id) {
-        Category category = getCategoryById(id);
-        categoryRepository.delete(category);
+        categoryRepository.deleteById(id);
     }
 
 }

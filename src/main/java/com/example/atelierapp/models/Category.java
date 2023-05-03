@@ -1,12 +1,20 @@
 package com.example.atelierapp.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "categories")
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Category {
 
     @Id
@@ -22,52 +30,14 @@ public class Category {
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<Item> items = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "category_designer", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "designer_id"))
+    private Set<Designer> designers = new HashSet<>();
+
     @PreRemove
     public void removeFromAll() {
         collections.forEach(collection -> collection.getCategories().remove(this));
         items.forEach(item -> item.getCategories().remove(this));
 
-    }
-
-    // constructors, getters and setters
-    public Category() {
-    }
-
-    public Category(String name, Set<Collection> collections, Set<Item> items) {
-        this.name = name;
-        this.collections = collections;
-        this.items = items;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<Collection> getCollections() {
-        return collections;
-    }
-
-    public void setCollections(Set<Collection> collections) {
-        this.collections = collections;
-    }
-
-    public Set<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(Set<Item> items) {
-        this.items = items;
     }
 }

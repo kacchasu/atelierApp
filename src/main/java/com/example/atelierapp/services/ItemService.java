@@ -3,18 +3,16 @@ package com.example.atelierapp.services;
 import com.example.atelierapp.exceptions.ResourceNotFoundException;
 import com.example.atelierapp.models.Item;
 import com.example.atelierapp.repositories.ItemRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ItemService {
 
     private final ItemRepository itemRepository;
-
-    public ItemService(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
-    }
 
     public List<Item> getAllItems() {
         return itemRepository.findAll();
@@ -43,11 +41,4 @@ public class ItemService {
         itemRepository.delete(item);
     }
 
-    public List<Item> getExistingItems(List<Long> itemIds) {
-        List<Item> existingItems = itemRepository.findAllById(itemIds);
-        if (existingItems.size() != itemIds.size()) {
-            throw new ResourceNotFoundException("One or more items do not exist");
-        }
-        return existingItems;
-    }
 }

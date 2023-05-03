@@ -4,6 +4,8 @@ import com.example.atelierapp.dtos.ItemDTO;
 import com.example.atelierapp.mappers.ItemMapper;
 import com.example.atelierapp.models.Item;
 import com.example.atelierapp.services.ItemService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,36 +13,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping("/items")
+@RepositoryRestController
+@RequiredArgsConstructor
 public class ItemController {
 
     private final ItemService itemService;
     private final ItemMapper itemMapper;
 
-    public ItemController(ItemService itemService, ItemMapper itemMapper) {
-        this.itemService = itemService;
-        this.itemMapper = itemMapper;
-    }
-
-    @GetMapping("/{id}")
+    @GetMapping("/items/{id}")
     public ResponseEntity<ItemDTO> getItem(@PathVariable Long id) {
         Item item = itemService.getItemById(id);
         ItemDTO itemDTO = itemMapper.toItemDTO(item);
         return ResponseEntity.ok(itemDTO);
     }
 
-    @GetMapping
+    @GetMapping("/items")
     public ResponseEntity<List<ItemDTO>> getAllItems() {
         List<Item> items = itemService.getAllItems();
         List<ItemDTO> itemDTOs = new ArrayList<>();
-        for(Item item : items) {
+        for (Item item : items) {
             itemDTOs.add(itemMapper.toItemDTO(item));
         }
         return ResponseEntity.ok(itemDTOs);
     }
 
-    @PostMapping
+    @PostMapping("/items")
     public ResponseEntity<ItemDTO> createItem(@RequestBody ItemDTO itemDTO) {
         Item item = itemMapper.toItem(itemDTO);
         Item savedItem = itemService.createItem(item);
@@ -48,7 +45,7 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedItemDTO);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/items/{id}")
     public ResponseEntity<ItemDTO> updateItem(@PathVariable Long id, @RequestBody ItemDTO itemDTO) {
         Item item = itemMapper.toItem(itemDTO);
         item.setId(id);
@@ -57,7 +54,7 @@ public class ItemController {
         return ResponseEntity.ok(updatedItemDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/items/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
 
         itemService.deleteItem(id);
