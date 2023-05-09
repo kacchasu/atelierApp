@@ -24,7 +24,7 @@ public class DesignerMapper {
         }
         designerDTO.setCategoryIds(categoryIds);
         designerDTO.setDescription(designer.getDescription());
-        designerDTO.setId(designerDTO.getId());
+        designerDTO.setId(designer.getId());
         return designerDTO;
     }
 

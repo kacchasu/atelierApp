@@ -23,7 +23,7 @@ public class CollectionMapper {
 
     public CollectionDTO toCollectionDTO(Collection collection) {
         CollectionDTO collectionDTO = new CollectionDTO();
-        collectionDTO.setName(collectionDTO.getName());
+        collectionDTO.setName(collection.getName());
         collectionDTO.setDescription(collection.getDescription());
         collectionDTO.setDesignerId(collection.getDesigner().getId());
 
